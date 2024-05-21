@@ -1,10 +1,34 @@
+'use client';
+
+import { useTodoListStore } from '@/stores/useTodoListStore';
 import { css } from '@styled-system/css';
+import { ChangeEventHandler, useState } from 'react';
 
 export default function TodoListFooter() {
+  const [title, setTitle] = useState('');
+  const addTodo = useTodoListStore(state => state.addTodo);
+
+  const handleTodoTitleChange: ChangeEventHandler<HTMLInputElement> = e => {
+    setTitle(e.target.value);
+  };
+
+  const handleAddTodo = () => {
+    const isNotTitleEmpty = title.trim();
+
+    if (isNotTitleEmpty) {
+      addTodo(title);
+      setTitle('');
+    } else {
+      alert('투두를 입력해주세요.');
+    }
+  };
+
   return (
     <footer className={todoListFooterStyle}>
-      <input className={todoInputStyle} />
-      <button className={todoButtonStyle}>추가</button>
+      <input className={todoInputStyle} onChange={handleTodoTitleChange} value={title} />
+      <button className={todoButtonStyle} onClick={handleAddTodo}>
+        추가
+      </button>
     </footer>
   );
 }

@@ -1,19 +1,23 @@
+'use client';
+
+import { useTodoListStore } from '@/stores/useTodoListStore';
 import { css } from '@styled-system/css';
-import { stack } from '@styled-system/patterns';
+import Todo from './Todo';
+import { useMemo } from 'react';
 
 export default function TodoList() {
+  const todoList = useTodoListStore(state => state.todoList);
+  const filteredTodoList = useMemo(() => {
+    const filteredTodoList = todoList.filter(todo => !todo.isCompleted);
+    const filteredCompletedTodoList = todoList.filter(todo => todo.isCompleted);
+    return [...filteredTodoList, ...filteredCompletedTodoList];
+  }, [todoList]);
+
   return (
     <ul className={todoListStyle}>
-      <li className={todoStyle}>
-        <div className={stack({ direction: 'row', gap: '12px', align: 'center' })}>
-          <input type="checkbox" />
-          <div className={todoTextStyle}>안녕 이건 투두리스트야</div>
-        </div>
-        <div className={stack({ direction: 'row', gap: '12px', align: 'center' })}>
-          <button className={todoUpdateButton}>수정</button>
-          <button className={todoDeleteButton}>삭제</button>
-        </div>
-      </li>
+      {filteredTodoList.map(todo => (
+        <Todo key={todo.id} id={todo.id} isCompleted={todo.isCompleted} title={todo.title} />
+      ))}
     </ul>
   );
 }
@@ -26,29 +30,4 @@ const todoListStyle = css({
   height: '100%',
   padding: '24px 0',
   overflow: 'auto',
-});
-
-const todoDeleteButton = css({
-  fontSize: '14px',
-  cursor: 'pointer',
-});
-
-const todoUpdateButton = css({
-  fontSize: '14px',
-  cursor: 'pointer',
-});
-
-const todoStyle = css({
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'space-between',
-  flexShrink: '0',
-  height: '48px',
-  borderBottom: '1px solid',
-  borderColor: 'gray.100',
-  width: '100%',
-});
-
-const todoTextStyle = css({
-  fontSize: '14px',
 });
