@@ -1,21 +1,15 @@
 'use client';
 
-import { useTodoListStore } from '@/stores/useTodoListStore';
 import { css } from '@styled-system/css';
 import Todo from './Todo';
-import { useMemo } from 'react';
+import { useGetTodoList } from '@/hooks/useGetTodoList';
 
 export default function TodoList() {
-  const todoList = useTodoListStore(state => state.todoList);
-  const filteredTodoList = useMemo(() => {
-    const filteredTodoList = todoList.filter(todo => !todo.isCompleted);
-    const filteredCompletedTodoList = todoList.filter(todo => todo.isCompleted);
-    return [...filteredTodoList, ...filteredCompletedTodoList];
-  }, [todoList]);
+  const { todoList } = useGetTodoList();
 
   return (
     <ul className={todoListStyle}>
-      {filteredTodoList.map(todo => (
+      {todoList.map(todo => (
         <Todo key={todo.id} id={todo.id} isCompleted={todo.isCompleted} title={todo.title} />
       ))}
     </ul>

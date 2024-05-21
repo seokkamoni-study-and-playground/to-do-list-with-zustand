@@ -1,7 +1,6 @@
 import TodoList from '@/components/TodoList';
 import TodoListFooter from '@/components/TodoListFooter';
 import { css } from '@styled-system/css';
-import { stack } from '@styled-system/patterns';
 
 export default function MainPage() {
   return (

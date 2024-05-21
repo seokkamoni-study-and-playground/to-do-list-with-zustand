@@ -1,32 +1,37 @@
-import { useTodoListStore } from '@/stores/useTodoListStore';
-import { type Todo } from '@/types/todoList';
+import { useCancelCompletedTodo } from '@/hooks/useCancelCompletedTodo';
+import { useCompleteTodo } from '@/hooks/useCompleteTodo';
+import { useDeleteTodo } from '@/hooks/useDeleteTodo';
+import { useUpdateTodo } from '@/hooks/useUpdateTodo';
+import { type Todo } from '@/types/todo';
 import { css, cx } from '@styled-system/css';
 import { stack } from '@styled-system/patterns';
 
 type TodoProps = Todo;
 
 export default function Todo({ id, isCompleted, title }: TodoProps) {
-  const { completeTodo, cancelCompletedTodo, deleteTodo, updateTodo } = useTodoListStore();
+  const { deleteTodoMutate } = useDeleteTodo();
+  const { updateTodoMutate } = useUpdateTodo();
+  const { completeTodoMutate } = useCompleteTodo();
+  const { cancelCompletedTodoMutate } = useCancelCompletedTodo();
 
   const handleCompleteTodoToggle = () => {
     if (isCompleted) {
-      cancelCompletedTodo(id);
+      cancelCompletedTodoMutate(id);
     } else {
-      completeTodo(id);
+      completeTodoMutate(id);
     }
   };
 
   const handleDeleteTodo = () => {
     if (confirm('정말 삭제하시겠습니까?')) {
-      deleteTodo(id);
+      deleteTodoMutate(id);
     }
   };
 
   const handleUpdateTodo = () => {
     const updateTitle = prompt('수정할 할 일을 입력해 주세요.');
-
     if (updateTitle) {
-      updateTodo(id, updateTitle);
+      updateTodoMutate(id, updateTitle);
     }
   };
 
