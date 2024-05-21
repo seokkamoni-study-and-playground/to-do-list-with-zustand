@@ -3,6 +3,9 @@ import { create } from 'zustand';
 
 type TodoListState = {
   todoList: Todo[];
+};
+
+type TodoListActions = {
   addTodo: (title: string) => void;
   deleteTodo: (id: number) => void;
   completeTodo: (id: number) => void;
@@ -10,7 +13,7 @@ type TodoListState = {
   updateTodo: (id: number, title: string) => void;
 };
 
-export const useTodoListStore = create<TodoListState>(set => ({
+export const useTodoListStore = create<TodoListState & TodoListActions>(set => ({
   todoList: [],
   addTodo: title =>
     set(state => ({
