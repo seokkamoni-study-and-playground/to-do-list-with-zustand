@@ -1,14 +1,13 @@
 import TodoList from '@/components/TodoList';
 import TodoListFooter from '@/components/TodoListFooter';
+import TodoListHeader from '@/components/TodoListHeader';
 import { css } from '@styled-system/css';
 
 export default function MainPage() {
   return (
     <div className={mainPageStyle}>
       <div className={todoListContainerStyle}>
-        <header className={todoListHeaderStyle}>
-          <span>석두리스트</span>
-        </header>
+        <TodoListHeader />
         <TodoList />
         <TodoListFooter />
       </div>
@@ -34,15 +33,4 @@ const todoListContainerStyle = css({
   border: '1px solid',
   borderColor: 'gray.100',
   padding: '24px 32px',
-});
-
-const todoListHeaderStyle = css({
-  width: '100%',
-  height: '24px',
-  borderBottom: '1px solid',
-  borderColor: 'gray.100',
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'space-between',
-  paddingBottom: '16px',
 });
